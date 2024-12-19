@@ -7,21 +7,21 @@ body:
     id: name
     attributes:
       label: Name
-      placeholder: Insert your name here
+      placeholder: Anshul Rawal
     validations:
       required: true
   - type: input
     id: discordname
     attributes:
-      label: Discord Username (if applicable)
-      placeholder: Insert your Discord username here
+      label: 
+      placeholder: walkerheld
     validations:
       required: false
   - type: textarea
     id: Additional
     attributes:
       label: Additional Context
-      description: How did you come to know about DevRhylme Foundation ? What do you like about this community/Why do you want to join?
+      description: "I learned about DevRhylme Foundation through Unstop and explored their LinkedIn page, which highlighted their focus on collaboration and growth in tech. I’m drawn to the community’s commitment to skill development and impactful projects, and I’d love to contribute while learning from like-minded individuals."
     validations:
       required: true
   - type: markdown
