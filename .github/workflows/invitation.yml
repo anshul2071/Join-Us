@@ -1,3 +1,4 @@
+name: Invitation to DevRhylme Foundation - GitHub Organization
 on:
   issues:
     types: [labeled]
@@ -14,12 +15,49 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           comment: '<b><h1>Welcome to the community🎉</h1></b><br>Don''t forget to accept the invitation sent through mail.<br> If you would like to continue contributing to open source and would like to do it with an awesome inclusive community, you should join our <a href="https://discord.gg/druweDMn3s">Discord Server</a> - we help and encourage each other to contribute to open source little and often!🤓'
 
-      - name: Add GitHub Members to Organization
+      - name: Fetch User ID
+        id: get_user_id
         run: |
+          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/users/${{ github.event.issue.user.login }} \
+          | jq '.id' > user_id.txt
+
+      - name: Add GitHub Member to Organization
+        run: |
+          USER_ID=$(cat user_id.txt)
           curl -X PUT \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/orgs/DevRhylme-Foundation/invitations \
-            -d '{"invitee_id": "${{ github.event.issue.user.id }}", "role": "direct_member"}'
+            -d "{\"invitee_id\": \"$USER_ID\", \"role\": \"direct_member\"}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+forms:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      placeholder: Insert your name here
+    validations:
+      required: true
+  - type: input
+    id: discordname
+    attributes:
+      label: Discord Username (if applicable)
+      placeholder: Insert your Discord username here
+    validations:
+      required: false
+  - type: textarea
+    id: Additional
+    attributes:
+      label: Additional Context
+      description: How did you come to know about DevRhylme Foundation? What do you like about this community/Why do you want to join?
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        You can also join our [DevRhylme community](https://discord.gg/xjwZzGKDVR)
+        Feel free to check out other cool repositories of the DevRhylme Foundation [here](https://github.com/DEVRhylme-Foundation)
